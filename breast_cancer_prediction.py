@@ -7,6 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import cross_val_score
 import seaborn as sns
 import matplotlib.pyplot as plt
 
