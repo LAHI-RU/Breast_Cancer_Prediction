@@ -41,6 +41,11 @@ X_test = scaler.transform(X_test)
 
 
 model = LogisticRegression()
+
+cross_val_scores = cross_val_score(model, X_train, y_train, cv=10)
+print("Cross-Validation Accuracy Scores:", cross_val_scores)
+print("Average Cross-Validation Accuracy:", cross_val_scores.mean())
+
 model.fit(X_train, y_train)
 
 y_pred = model.predict(X_test)
