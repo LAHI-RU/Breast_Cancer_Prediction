@@ -8,6 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import cross_val_score
+from sklearn.feature_selection import RFE
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -42,13 +43,26 @@ X_test = scaler.transform(X_test)
 
 model = LogisticRegression()
 
+# Initialize the model for feature selection
+selector = RFE(LogisticRegression(), n_features_to_select=10)  # Select top 10 features (adjustable)
+selector.fit(X_train, y_train)
+
+# Transform the training and test sets to keep only selected features
+X_train_selected = selector.transform(X_train)
+X_test_selected = selector.transform(X_test)
+
+# Print selected features
+selected_features = data.feature_names[selector.support_]
+print("Selected Features:", selected_features)
+
+
 cross_val_scores = cross_val_score(model, X_train, y_train, cv=10)
 print("Cross-Validation Accuracy Scores:", cross_val_scores)
 print("Average Cross-Validation Accuracy:", cross_val_scores.mean())
 
-model.fit(X_train, y_train)
+model.fit(X_train_selected, y_train)
 
-y_pred = model.predict(X_test)
+y_pred = model.predict(X_test_selected)
 
 
 initial_accuracy = accuracy_score(y_test, y_pred)
